@@ -1,0 +1,23 @@
+﻿@page "/"
+
+<h1>Json Editor Sample</h1>
+
+<div class="view-json">
+    <h4>View Json string</h4>
+    <p>@MyJsonValue.JsonValue</p>
+</div>
+
+<EditForm Model="MyJsonValue">
+    <JsonEditor @bind-Value="MyJsonValue.JsonValue" FieldName="@nameof(JsonTestModel.JsonValue)" 
+                ValidationFor="@(() => MyJsonValue.JsonValue)"></JsonEditor>
+
+</EditForm>
+
+@code {
+    private JsonTestModel MyJsonValue { get; set; }
+
+    protected override void OnInitialized()
+    {
+        MyJsonValue = new JsonTestModel();
+    }
+}
