@@ -5,50 +5,56 @@
 
 <div class="json-content">
     <span>{</span>
-    <button type="button" class="j-btn-l j-btn-right" @onclick="CopyToClipboard"><i class="fas fa-copy"></i></button>
-    @if (JsonObject != null)
-    {
+    <button type="button" class="j-btn-l j-btn-right" @onclick="CopyToClipboard">
+        <i class="fas fa-copy"></i>
+        Copy
+    </button>
+    @if (JsonObject != null) {
         <div style="margin-left:20px; min-width:500px">
-            @foreach (var value in JsonObject)
-            {
+            @foreach (var value in JsonObject) {
                 <div>
                     @if (value.Value.ValueKind == JsonValueKind.Number || value.Value.ValueKind == JsonValueKind.True ||
-                        value.Value.ValueKind == JsonValueKind.False || value.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        <span class="property-name">"@value.Key"</span><span>:</span>
+                   value.Value.ValueKind == JsonValueKind.False || value.Value.ValueKind == JsonValueKind.Null) {
+                        <span class="property-name">"@value.Key"</span>
+
+                        <span>:</span>
                         <span class="value-content value-number">@value.Value.ToString()</span>
                     }
-                    else if (value.Value.ValueKind == JsonValueKind.String)
-                    {
-                        <span class="property-name">"@value.Key"</span><span>:</span>
+                    else if (value.Value.ValueKind == JsonValueKind.String) {
+                        <span class="property-name">"@value.Key"</span>
+
+                        <span>:</span>
                         <span class="value-content value-string">"@value.Value.ToString()"</span>
 
                     }
-                    else if (value.Value.ValueKind == JsonValueKind.Array)
-                    {
-                        <span class="property-name">"@value.Key"</span><span>:</span>
+                    else if (value.Value.ValueKind == JsonValueKind.Array) {
+                        <span class="property-name">"@value.Key"</span>
+
+                        <span>:</span>
                         <span class="value-content value-array">@value.Value.ToJsonString()</span>
                     }
-                    else if (value.Value.ValueKind == JsonValueKind.Object)
-                    {
-                        <span class="property-name">"@value.Key"</span><span>:</span>
+                    else if (value.Value.ValueKind == JsonValueKind.Object) {
+                        <span class="property-name">"@value.Key"</span>
+
+                        <span>:</span>
                         <span>
                             <span>{</span>
                             <InternalJsonEditor Value="@value.Value.ToJsonString()"
-                                             ValueChanged="@(e => JsonObjectUpdated(value.Key, e))" KeyValues="KeyValues"></InternalJsonEditor>
+                                    ValueChanged="@(e => JsonObjectUpdated(value.Key, e))" KeyValues="KeyValues"></InternalJsonEditor>
                             <span>}</span>
                         </span>
                     }
-                    @if (JsonObject.LastOrDefault().Key != value.Key)
-                    {<span>,</span>}
-                    @if (value.Value.ValueKind != JsonValueKind.Object)
-                    {
+                    @if (JsonObject.LastOrDefault().Key != value.Key) {
+                        <span>,</span>
+                    }
+                    @if (value.Value.ValueKind != JsonValueKind.Object) {
                         <JsonItemEditor JsonObject="@JsonObject" JsonObjectChanged="@ValueUpdated" KeyValues="KeyValues"
-                                        EditingPropertyName="@value.Key"></JsonItemEditor>
+                            EditingPropertyName="@value.Key"></JsonItemEditor>
                     }
                     <span>
                         <button type="button" class="j-btn j-btn-danger" @onclick="@(() => RemoveValue(value.Key))">
                             <i class="fas fa-times"></i>
+                            Delete
                         </button>
                     </span>
                 </div>
@@ -58,8 +64,7 @@
             </div>
         </div>
     }
-    else
-    {
+    else {
         <div style="margin-left:20px;">
             <JsonItemEditor JsonObject="@JsonObject" JsonObjectChanged="@ValueUpdated" KeyValues="KeyValues"></JsonItemEditor>
         </div>
@@ -70,8 +75,8 @@
 
 <style>
     .json-content {
-        padding:5px;
-        border:1px solid #ccc;
+        padding: 5px;
+        border: 1px solid #ccc;
     }
 
     .j-btn {
@@ -92,7 +97,7 @@
         font-size: 14px;
     }
 
-    .j-btn-primary{
+    .j-btn-primary {
         color: darkblue;
     }
 
@@ -101,23 +106,23 @@
     }
 
     .j-txt {
-        padding:2px 5px;
-        border-radius:5px;
-        border:1px solid #ccc;
-        width:100%;
-        line-height:1.2em;
+        padding: 2px 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 100%;
+        line-height: 1.2em;
     }
 
     .j-btn-right {
         position: relative;
-        margin-right:0px;
-        margin-left:auto;
-        display:block;
-        margin-top:-23px;
+        margin-right: 0px;
+        margin-left: auto;
+        display: block;
+        margin-top: -23px;
     }
 
     .valid-c {
-        color:red;
+        color: red;
     }
 
     .property-name {
@@ -167,25 +172,21 @@
 
     private JsonObject? JsonObject { get; set; }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (Value != null)
-        {
+    protected override async Task OnParametersSetAsync() {
+        if (Value != null) {
             JsonObject = JsonNode.Parse(Value) as JsonObject;
         }
         await base.OnParametersSetAsync();
     }
 
-    protected override bool TryParseValueFromString(string value, out string? result, out string? validationErrorMessage)
-    {
+    protected override bool TryParseValueFromString(string value, out string? result, out string? validationErrorMessage) {
         Console.WriteLine("JJ: " + value);
         result = value;
         validationErrorMessage = null;
         return true;
     }
 
-    private void ValueUpdated(JsonObject jsonObject)
-    {
+    private void ValueUpdated(JsonObject jsonObject) {
         JsonObject = jsonObject;
 
         TryParseValueFromString(jsonObject.ToJsonString(), out string? JsonObjectString, out string? vm);
@@ -195,10 +196,8 @@
         StateHasChanged();
     }
 
-    private void JsonObjectUpdated(string prop, string value)
-    {
-        if (JsonObject != null)
-        {
+    private void JsonObjectUpdated(string prop, string value) {
+        if (JsonObject != null) {
             JsonObject[prop] = JsonNode.Parse(value);
             TryParseValueFromString(JsonObject.ToJsonString(), out string? JsonObjectString, out string? vm);
             ValueChanged.InvokeAsync(JsonObjectString);
@@ -207,10 +206,8 @@
         }
     }
 
-    private void RemoveValue(string prop)
-    {
-        if (JsonObject != null)
-        {
+    private void RemoveValue(string prop) {
+        if (JsonObject != null) {
             JsonObject.Remove(prop);
             // ValueChanged.InvokeAsync(JsonObject.ToJsonString());
             TryParseValueFromString(JsonObject.ToJsonString(), out string? JsonObjectString, out string? vm);
@@ -220,8 +217,7 @@
         }
     }
 
-    private async Task CopyToClipboard()
-    {
+    private async Task CopyToClipboard() {
         await JS.InvokeAsync<string?>("CopyToClipboard", new object[] { Value });
     }
 }

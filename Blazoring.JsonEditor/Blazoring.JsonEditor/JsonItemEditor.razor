@@ -3,13 +3,16 @@
 <button type="button" @onclick="@(() => AddNew1())" class="j-btn">
     @if (AddNew) {
         <i class="fas fa-minus"></i>
+        <span>Cancel</span>
     }
     else {
         if (string.IsNullOrEmpty(EditingPropertyName)) {
             <i class="fas fa-plus"></i>
+            <span>Confirm</span>
         }
         else {
             <i class="fas fa-edit"></i>
+            <span>Edit</span>
         }
     }
 </button>

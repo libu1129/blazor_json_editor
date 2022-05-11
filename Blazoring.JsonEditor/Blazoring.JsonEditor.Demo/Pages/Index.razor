@@ -4,11 +4,11 @@
 
 <div class="view-json">
     <h4>View Json string</h4>
-    <p>@MyJsonValue.JsonValue</p>
+    <input value="@MyJsonValue.JsonValue" @onchange="@(p => MyJsonValue.JsonValue = (string)(p.Value ?? ""))" style="width: 100%" rows="10" multiple />
 </div>
 
 <EditForm Model="MyJsonValue">
-    <JsonEditor @bind-Value="MyJsonValue.JsonValue" FieldName="@nameof(JsonTestModel.JsonValue)" 
+    <JsonEditor @bind-Value="MyJsonValue.JsonValue" FieldName="@nameof(JsonTestModel.JsonValue)"
                 ValidationFor="@(() => MyJsonValue.JsonValue)"></JsonEditor>
 
 </EditForm>
@@ -16,8 +16,7 @@
 @code {
     private JsonTestModel MyJsonValue { get; set; }
 
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() {
         MyJsonValue = new JsonTestModel();
     }
 }
