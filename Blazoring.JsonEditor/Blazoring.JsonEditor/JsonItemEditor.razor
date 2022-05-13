@@ -150,34 +150,39 @@
     }
 
     protected override void OnParametersSet() {
+        try {
         JsonItem = new JsonItem();
-        @if (EditingPropertyName != null) {
-            JsonItem.PropertyName = EditingPropertyName;
+            if (EditingPropertyName != null) {
+                JsonItem.PropertyName = EditingPropertyName;
 
-            var f = JsonObject?.GetPropertyValue(EditingPropertyName);
-            JsonItem.ValueKind = f.ValueKind;
-            if (f.ValueKind == JsonValueKind.String) {
-                JsonItem.Value = f.ToString();
-            }
-            else if (f.ValueKind == JsonValueKind.Number) {
-                JsonItem.NumericValue = Convert.ToDouble(f.ToString());
-            }
-            else if (f.ValueKind == JsonValueKind.True) {
-                JsonItem.Value = "true";
-            }
-            else if (f.ValueKind == JsonValueKind.False) {
-                JsonItem.Value = "false";
-                JsonItem.ValueKind = JsonValueKind.True;
-            }
-            else if (f.ValueKind == JsonValueKind.Array) {
-                string Value1 = f.ToJsonString();
-                JsonItem.Value = Value1.Substring(1, Value1.Length - 2);
-            }
-            else if (f.ValueKind == JsonValueKind.Null) {
-                JsonItem.ValueKind = JsonValueKind.Undefined;
-            }
+                var f = JsonObject?.GetPropertyValue(EditingPropertyName);
+                JsonItem.ValueKind = f.ValueKind;
+                if (f.ValueKind == JsonValueKind.String) {
+                    JsonItem.Value = f.ToString();
+                }
+                else if (f.ValueKind == JsonValueKind.Number) {
+                    JsonItem.NumericValue = Convert.ToDouble(f.ToString());
+                }
+                else if (f.ValueKind == JsonValueKind.True) {
+                    JsonItem.Value = "true";
+                }
+                else if (f.ValueKind == JsonValueKind.False) {
+                    JsonItem.Value = "false";
+                    JsonItem.ValueKind = JsonValueKind.True;
+                }
+                else if (f.ValueKind == JsonValueKind.Array) {
+                    string Value1 = f.ToJsonString();
+                    JsonItem.Value = Value1.Substring(1, Value1.Length - 2);
+                }
+                else if (f.ValueKind == JsonValueKind.Null) {
+                    JsonItem.ValueKind = JsonValueKind.Undefined;
+                }
 
-            Console.WriteLine(JsonSerializer.Serialize(JsonItem));
+                Console.WriteLine(JsonSerializer.Serialize(JsonItem));
+            }
+        }
+        catch (Exception ex) {
+
         }
     }
 

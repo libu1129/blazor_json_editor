@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29905.134
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazoring.JsonEditor", "Blazoring.JsonEditor\Blazoring.JsonEditor.csproj", "{A821FE8E-9AC2-433D-8082-56C844CE25F3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazoring.JsonEditor.Demo", "Blazoring.JsonEditor.Demo\Blazoring.JsonEditor.Demo.csproj", "{65859557-DA10-4AAB-A220-D48E81C98AD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazoring.JsonEditor.ServerDemo", "Blazoring.JsonEditor.ServerDemo\Blazoring.JsonEditor.ServerDemo.csproj", "{296345CF-F3D4-467C-AD84-DB082893DB6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{65859557-DA10-4AAB-A220-D48E81C98AD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65859557-DA10-4AAB-A220-D48E81C98AD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65859557-DA10-4AAB-A220-D48E81C98AD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{296345CF-F3D4-467C-AD84-DB082893DB6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{296345CF-F3D4-467C-AD84-DB082893DB6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{296345CF-F3D4-467C-AD84-DB082893DB6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{296345CF-F3D4-467C-AD84-DB082893DB6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

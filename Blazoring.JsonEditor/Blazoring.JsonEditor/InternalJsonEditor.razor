@@ -1,48 +1,50 @@
 ﻿@using System.Text.Json
 @using System.Linq.Expressions
 
-@if (JsonObject != null)
-{
+@if (JsonObject != null) {
     <div style="margin-left:20px; min-width:500px">
-        @foreach (var value in JsonObject)
-        {
+        @foreach (var value in JsonObject) {
             <div>
-                @if (value.Value.ValueKind == JsonValueKind.Number || value.Value.ValueKind == JsonValueKind.True || 
-                    value.Value.ValueKind == JsonValueKind.False || value.Value.ValueKind == JsonValueKind.Null)
-                {
-                    <span class="property-name">"@value.Key"</span><span>:</span>
+                @if (value.Value.ValueKind == JsonValueKind.Number || value.Value.ValueKind == JsonValueKind.True ||
+               value.Value.ValueKind == JsonValueKind.False || value.Value.ValueKind == JsonValueKind.Null) {
+                    <span class="property-name">"@value.Key"</span>
+
+                    <span>:</span>
                     <span class="value-content value-number">@value.Value.ToString()</span>
                 }
-                else if (value.Value.ValueKind == JsonValueKind.String)
-                {
-                    <span class="property-name">"@value.Key"</span><span>:</span>
+                else if (value.Value.ValueKind == JsonValueKind.String) {
+                    <span class="property-name">"@value.Key"</span>
+
+                    <span>:</span>
                     <span class="value-content value-string">"@value.Value.ToString()"</span>
 
                 }
-                else if (value.Value.ValueKind == JsonValueKind.Array)
-                {
-                    <span class="property-name">"@value.Key"</span><span>:</span>
+                else if (value.Value.ValueKind == JsonValueKind.Array) {
+                    <span class="property-name">"@value.Key"</span>
+
+                    <span>:</span>
                     <span class="value-content value-array">@value.Value.ToJsonString()</span>
                 }
-                else if (value.Value.ValueKind == JsonValueKind.Object)
-                {
-                    <span class="property-name">"@value.Key"</span><span>:</span>
+                else if (value.Value.ValueKind == JsonValueKind.Object) {
+                    <span class="property-name">"@value.Key"</span>
+
+                    <span>:</span>
                     @*<div style="margin-left:20px">*@
                     <span>
                         <span>{</span>
                         <InternalJsonEditor Value="@value.Value.ToJsonString()"
-                                         ValueChanged="@(e => JsonObjectUpdated(value.Key, e))" KeyValues="KeyValues"></InternalJsonEditor>
+                                ValueChanged="@(e => JsonObjectUpdated(value.Key, e))" KeyValues="KeyValues"></InternalJsonEditor>
                         <span>}</span>
                     </span>
                     @*<div>@(((JsonObject)JsonObject.GetPropertyValue(value)).ToJsonString())</div>*@
                     @*</div>*@
                 }
-                @if (JsonObject.LastOrDefault().Key != value.Key)
-                {<span>,</span>}
-                @if (value.Value.ValueKind != JsonValueKind.Object)
-                {
+                @if (JsonObject.LastOrDefault().Key != value.Key) {
+                    <span>,</span>
+                }
+                @if (value.Value.ValueKind != JsonValueKind.Object) {
                     <JsonItemEditor JsonObject="@JsonObject" JsonObjectChanged="@ValueUpdated" KeyValues="KeyValues"
-                                    EditingPropertyName="@value.Key"></JsonItemEditor>
+                        EditingPropertyName="@value.Key"></JsonItemEditor>
                 }
                 <span><button type="button" class="j-btn j-btn-danger" @onclick="@(() => RemoveValue(value.Key))"><i class="fas fa-times"></i></button></span>
             </div>
@@ -52,8 +54,7 @@
         </div>
     </div>
 }
-else
-{
+else {
     <JsonItemEditor JsonObject="@JsonObject" JsonObjectChanged="@ValueUpdated" KeyValues="KeyValues"></JsonItemEditor>
 }
 
@@ -107,36 +108,34 @@ else
 
     private JsonObject? JsonObject { get; set; }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (Value != null)
-        {
-            JsonObject = JsonNode.Parse(Value) as JsonObject;
+    protected override async Task OnParametersSetAsync() {
+        try {
+            if (Value != null) {
+                JsonObject = JsonNode.Parse(Value) as JsonObject;
+            }
+        }
+        catch (Exception ex) {
+
         }
         await base.OnParametersSetAsync();
     }
 
-    private void ValueUpdated(JsonObject jsonObject)
-    {
+    private void ValueUpdated(JsonObject jsonObject) {
         JsonObject = jsonObject;
         ValueChanged.InvokeAsync(jsonObject.ToJsonString());
         StateHasChanged();
     }
 
-    private void JsonObjectUpdated(string prop, string value)
-    {
-        if (JsonObject != null)
-        {
+    private void JsonObjectUpdated(string prop, string value) {
+        if (JsonObject != null) {
             JsonObject[prop] = JsonNode.Parse(value);
             ValueChanged.InvokeAsync(JsonObject.ToJsonString());
             StateHasChanged();
         }
     }
 
-    private void RemoveValue(string prop)
-    {
-        if (JsonObject != null)
-        {
+    private void RemoveValue(string prop) {
+        if (JsonObject != null) {
             JsonObject.Remove(prop);
             ValueChanged.InvokeAsync(JsonObject.ToJsonString());
             StateHasChanged();

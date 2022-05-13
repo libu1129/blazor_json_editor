@@ -173,8 +173,13 @@
     private JsonObject? JsonObject { get; set; }
 
     protected override async Task OnParametersSetAsync() {
-        if (Value != null) {
-            JsonObject = JsonNode.Parse(Value) as JsonObject;
+        if (string.IsNullOrWhiteSpace(Value) == false) {
+            try {
+                JsonObject = JsonNode.Parse(Value) as JsonObject;
+            }
+            catch (Exception ex) {
+                JsonObject = null;
+            }
         }
         await base.OnParametersSetAsync();
     }
@@ -218,6 +223,7 @@
     }
 
     private async Task CopyToClipboard() {
-        await JS.InvokeAsync<string?>("CopyToClipboard", new object[] { Value });
+        await JS.InvokeAsync<string?>
+    ("CopyToClipboard", new object[] { Value });
     }
-}
+    }
